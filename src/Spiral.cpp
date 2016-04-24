@@ -34,7 +34,53 @@ Note : Check the function Parameters ,Its a double pointer .
 #include "stdafx.h"
 #include<stdlib.h>
 
+int i = -1;
+void leftup(int a, int b, int rows, int columns, int** input_array, int *output_array, int** x);
+void rightdown(int a, int b, int rows, int columns, int** input_array, int *output_array, int** x);
 int *spiral(int rows, int columns, int **input_array)
 {
-	return NULL;
+	if (*input_array == NULL || rows <= 0 || columns <= 0)
+		return NULL;
+	/*int *output_array = (int*)malloc(10 * sizeof(int));
+	int **x = (int**)malloc(rows*sizeof(int*));
+	for (int i = 0; i < rows; i++)
+		x[i] = (int*)malloc(columns*sizeof(int));
+	for (int i = 0; i < rows; i++)
+	for (int j = 0; j < columns; j++)
+		x[i][j] = 0;
+	rightdown(0, 0, rows, columns, input_array, output_array, x);
+	//for (int j = 0; j < i; j++)
+		//printf("%d ", output_array[j]);
+	return output_array;*/
 }
+void rightdown(int a, int b, int rows, int columns, int** input_array, int *output_array, int** x)
+
+{
+	if (a < 0 || b < 0 || a >= rows || b >= columns)
+		return;
+	if (x[a][b] != 1){
+
+		//printf("%d ", input_array[a][b]);
+		output_array[i++] = input_array[a][b];
+	}
+	x[a][b] = 1;
+	rightdown(a, b + 1, rows, columns, input_array, output_array, x);
+	rightdown(a + 1, columns - 1, rows, columns, input_array, output_array, x);
+	leftup(a, columns - 1, rows, columns, input_array, output_array, x);
+}
+void leftup(int a, int b, int rows, int columns, int** input_array, int *output_array, int** x)
+
+{
+	if (a < 0 || b < 0 || a >= rows || b >= columns)
+		return;
+	//printf("%d %d", a, b);
+	if (x[a][b] != 1){
+		//	printf("%d ", input_array[a][b]);
+		output_array[i++] = input_array[a][b];
+	}
+	x[a][b] = 1;
+	leftup(a, b - 1, rows, columns, input_array, output_array, x);
+	leftup(a - 1, 0, rows, columns, input_array, output_array, x);
+	rightdown(a + 1, b + 1, rows - 1, columns - 1, input_array, output_array, x);
+}
+
