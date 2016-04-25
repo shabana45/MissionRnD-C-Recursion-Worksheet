@@ -44,38 +44,44 @@ P.S: The Above Problem is just a modified version of a popular BackTracking prob
 
 #include "stdafx.h"
 #include <math.h>
-/*int getmarkedcol(int* battlefield,int n,int row) {
-	int i;
-	for (i = 0; i < n; i++)
-	if (battlefield[row][i] == 'Q') {
-		return (i);
-		break;
-	}
+int checkmate(int *battlefield, int row, int columns, int n);
+int placesnipper(int *battlefeild, int columns, int n);
+int solve_nsnipers(int *battlefield, int n){
+	if (battlefield == NULL)
+		return 0;
+	return placesnipper(battlefield, 0, n);
 }
+int checkmate(int *battlefield, int row, int columns, int n)
+{
+	int i, j;
 
-int feasible(int* battlefield,int n,int row, int col) {
-	int i, tcol;
-	for (i = 0; i < n; i++) {
-		tcol = getmarkedcol(battlefield,n,i);
-		if (col == tcol || abs(row - i) == abs(col - tcol))
-			return 0;
-	}
+	//check left 
+	for (int i = 0; i < columns; i++)
+	if (*((battlefield + row*n) + i) == 1)
+		return 0;
+	//check diagonal down
+	for ( i = row, j = columns; j >= 0 && i<n; i++, j--)
+	if (*((battlefield + i*n) + j) == 1)
+		return 0;
+	// Check  diagonal up
+	for (i = row, j = columns; i >= 0 && j >= 0; i--, j--)
+	if (*((battlefield + i*n) + j) == 1)
+		return 0;
 	return 1;
 }
-
-void nqueen(int *battlefield,int n,int row) {
-	int i, j;
-	if (row < n) {
-		for (i = 0; i < n; i++) {
-			if (feasible(battlefield,n,row, i)) {
-				battlefield[row][i] = '1';
-				nqueen(battlefield,n,row + 1);
-				battlefield[row][i] = '.';
-			}
+int placesnipper(int *battlefeild, int columns, int n)
+{
+	if (columns >= n)
+		return 1;
+	for (int i = 0; i < n; i++)
+	{
+		if (checkmate(battlefeild, i, columns, n) == 1)
+		{
+			*((battlefeild + i*n) + columns) = 1;
+			if (placesnipper(battlefeild, columns + 1, n))
+				return 1;
+			(*((battlefeild + i*n) + columns)) = 0;
 		}
 	}
-}*/
-int solve_nsnipers(int *battlefield, int n){
 	return 0;
-	//nqueen(battlefield,n,0);
 }
