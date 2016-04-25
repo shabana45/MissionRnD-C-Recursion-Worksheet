@@ -19,9 +19,9 @@ If input_array is NULL then return NULL.
 
 Example Input :
 int board[2][3]={
-				 {4,6,7},
-				 {1,3,8}
-				};
+{4,6,7},
+{1,3,8}
+};
 spiral(2,2,(int **)board); // Rows followed by columns followed by board
 
 Example Output : Return an array consisting of {4,6,7,8,3,1};
@@ -29,58 +29,60 @@ Example Output : Return an array consisting of {4,6,7,8,3,1};
 Note : Check the function Parameters ,Its a double pointer .
 
 */
-
-
-#include "stdafx.h"
+#include <stdio.h>
 #include<stdlib.h>
-
-int i = -1;
-void leftup(int a, int b, int rows, int columns, int** input_array, int *output_array, int** x);
-void rightdown(int a, int b, int rows, int columns, int** input_array, int *output_array, int** x);
+void helper_spiral(int a, int b, int rows, int columns, int** input_array, int* x, int *output_array);
 int *spiral(int rows, int columns, int **input_array)
 {
-	if (*input_array == NULL || rows <= 0 || columns <= 0)
+	if (input_array == NULL || rows <= 0 || columns <= 0)
 		return NULL;
-	/*int *output_array = (int*)malloc(10 * sizeof(int));
-	int **x = (int**)malloc(rows*sizeof(int*));
-	for (int i = 0; i < rows; i++)
-		x[i] = (int*)malloc(columns*sizeof(int));
-	for (int i = 0; i < rows; i++)
-	for (int j = 0; j < columns; j++)
-		x[i][j] = 0;
-	rightdown(0, 0, rows, columns, input_array, output_array, x);
-	//for (int j = 0; j < i; j++)
-		//printf("%d ", output_array[j]);
-	return output_array;*/
+	int range = rows*columns;
+	int *output_array = (int*)malloc((range)* sizeof(int));
+	int *x = (int*)calloc(1, sizeof(int));
+	helper_spiral(0, 0, rows, columns, input_array, x, output_array);
+	/*printf("\n");
+	for (int i = 0; i < *x; i++)
+	printf("%d ", output_array[i]);*/
+	return output_array;
 }
-void rightdown(int a, int b, int rows, int columns, int** input_array, int *output_array, int** x)
+void helper_spiral(int rIndex, int cIndex, int rows, int columns, int** input_array, int* x, int *output_array)
 
 {
-	if (a < 0 || b < 0 || a >= rows || b >= columns)
+	if (rIndex >= rows || cIndex >= columns)
 		return;
-	if (x[a][b] != 1){
-
-		//printf("%d ", input_array[a][b]);
-		output_array[i++] = input_array[a][b];
+	// going right
+	for (int i = cIndex; i < columns; ++i){
+		output_array[*x] = input_array[rIndex][i];
+		(*x)++;
 	}
-	x[a][b] = 1;
-	rightdown(a, b + 1, rows, columns, input_array, output_array, x);
-	rightdown(a + 1, columns - 1, rows, columns, input_array, output_array, x);
-	leftup(a, columns - 1, rows, columns, input_array, output_array, x);
-}
-void leftup(int a, int b, int rows, int columns, int** input_array, int *output_array, int** x)
-
-{
-	if (a < 0 || b < 0 || a >= rows || b >= columns)
-		return;
-	//printf("%d %d", a, b);
-	if (x[a][b] != 1){
-		//	printf("%d ", input_array[a][b]);
-		output_array[i++] = input_array[a][b];
+	rIndex++;
+	// going down 
+	for (int i = rIndex; i < rows; ++i){
+		output_array[*x] = input_array[i][columns - 1];
+		//printf("%d ",input_array[i][columns - 1]);
+		(*x)++;
 	}
-	x[a][b] = 1;
-	leftup(a, b - 1, rows, columns, input_array, output_array, x);
-	leftup(a - 1, 0, rows, columns, input_array, output_array, x);
-	rightdown(a + 1, b + 1, rows - 1, columns - 1, input_array, output_array, x);
-}
+	columns--;
+	// going left 
+	if (rIndex < rows)
+	{
+		for (int i = columns - 1; i >= cIndex; --i){
+			output_array[*x] = input_array[rows - 1][i];
+			//printf("%d ", input_array[rows - 1][i]);
+			(*x)++;
+		}
+	}
+	rows--;
+	// going up 
+	if (cIndex < columns)
+	{
+		for (int i = rows - 1; i >= rIndex; --i){
+			output_array[*x] = input_array[i][cIndex];
+			//printf("%d ", input_array[i][cIndex]);
+			(*x)++;
+		}
+		cIndex++;
+	}
 
+	helper_spiral(rIndex, cIndex, rows, columns, input_array, x, output_array);
+}

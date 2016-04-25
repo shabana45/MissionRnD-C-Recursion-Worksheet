@@ -43,6 +43,39 @@ P.S: The Above Problem is just a modified version of a popular BackTracking prob
 */
 
 #include "stdafx.h"
+#include <math.h>
+/*int getmarkedcol(int* battlefield,int n,int row) {
+	int i;
+	for (i = 0; i < n; i++)
+	if (battlefield[row][i] == 'Q') {
+		return (i);
+		break;
+	}
+}
+
+int feasible(int* battlefield,int n,int row, int col) {
+	int i, tcol;
+	for (i = 0; i < n; i++) {
+		tcol = getmarkedcol(battlefield,n,i);
+		if (col == tcol || abs(row - i) == abs(col - tcol))
+			return 0;
+	}
+	return 1;
+}
+
+void nqueen(int *battlefield,int n,int row) {
+	int i, j;
+	if (row < n) {
+		for (i = 0; i < n; i++) {
+			if (feasible(battlefield,n,row, i)) {
+				battlefield[row][i] = '1';
+				nqueen(battlefield,n,row + 1);
+				battlefield[row][i] = '.';
+			}
+		}
+	}
+}*/
 int solve_nsnipers(int *battlefield, int n){
 	return 0;
+	//nqueen(battlefield,n,0);
 }
